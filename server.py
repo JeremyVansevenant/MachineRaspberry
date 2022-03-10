@@ -2,6 +2,8 @@ import socket
 import os
 import subprocess
 import sys
+import fcntl
+import struct
 
 #TEST
 def get_ip_address(ifname):
