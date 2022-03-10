@@ -2,15 +2,21 @@ import socket
 import os
 import subprocess
 import sys
-import netifaces as ni
 
+#TEST
+def get_ip_address(ifname):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    return socket.inet_ntoa(fcntl.ioctl(
+        s.fileno(),
+        0x8915,  # SIOCGIFADDR
+        struct.pack('256s', ifname[:15])
+    )[20:24])
+
+print(get_ip_address("eth0"))
 #DEFINIR LA TAILLE DU BUFFER
 BUFFER_SIZE = 1024 * 128 
 
 #RECUPERER IP DU RASPBERRY
-ni.ifaddresses('eth0')
-ip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
-print(ip)  # should print "192.168.100.37"
 SERVER_HOST = os.popen('ip addr show eth0 | grep "\<inet\>" | awk \'{ print $2 }\' | awk -F "/" \'{ print $1 }\'').read().strip()
 print(SERVER_HOST)
 
