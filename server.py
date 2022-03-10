@@ -7,8 +7,9 @@ import sys
 BUFFER_SIZE = 1024 * 128 
 
 #RECUPERER IP DU RASPBERRY
-hostname = socket. gethostname()
-SERVER_HOST = socket. gethostbyname(hostname)
+hostname = socket.gethostname()
+print(socket.gethostbyname(hostname))
+SERVER_HOST = socket.gethostbyname(hostname)
 
 #CREER LE SOCKET
 SERVER_PORT = 13000
