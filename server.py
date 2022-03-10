@@ -3,30 +3,31 @@ import os
 import subprocess
 import sys
 
-SERVER_HOST = "192.168.0.119"
+#DEFINIR LA TAILLE DU BUFFER
+BUFFER_SIZE = 1024 * 128 
+
+#RECUPERER IP DU RASPBERRY
+hostname = socket. gethostname()
+SERVER_HOST = socket. gethostbyname(hostname)
+
+#CREER LE SOCKET
 SERVER_PORT = 13000
-BUFFER_SIZE = 1024 * 128 # 128KB max size of messages, feel free to increase
-# separator string for sending 2 messages in one go
-SEPARATOR = "<sep>"
-# create a socket object
 s = socket.socket()
-
-# bind the socket to all IP addresses of this host
 s.bind((SERVER_HOST, SERVER_PORT))
-s.listen(5)
-print(f"Listening as {SERVER_HOST}:{SERVER_PORT} ...")
-
-# accept any connections attempted
-client_socket, client_address = s.accept()
-print(f"{client_address[0]}:{client_address[1]} Connected!")
 
 while True:
-    # receiving 
+    #COMMENCER A ECOUTER
+    s.listen(5)
+
+    #AUTORISER LA CONNECTION DE L'API
+    client_socket, client_address = s.accept()
+
+
+    #RECEVOIR LA COMMANDE
     command = client_socket.recv(BUFFER_SIZE).decode()
     
-    #executing
+    #EXECUTER LA COMMANDE
     output = subprocess.getoutput(command)
-    print(f"{output}")
 
-    # responde
+    #ENVOYER LE RESULTAT DE LA COMMANDE
     client_socket.send(output.encode())
