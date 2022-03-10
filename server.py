@@ -8,7 +8,7 @@ import struct
 #TEST
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.connect(("8.8.8.8", 80))
-print(s.getsockname()[0])
+print(sock.getsockname()[0])
 
 #DEFINIR LA TAILLE DU BUFFER
 BUFFER_SIZE = 1024 * 128 
