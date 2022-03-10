@@ -2,14 +2,17 @@ import socket
 import os
 import subprocess
 import sys
+import netifaces as ni
 
 #DEFINIR LA TAILLE DU BUFFER
 BUFFER_SIZE = 1024 * 128 
 
 #RECUPERER IP DU RASPBERRY
-hostname = socket.gethostname()
-print(socket.gethostbyname(hostname))
-SERVER_HOST = socket.gethostbyname(hostname)
+ni.ifaddresses('eth0')
+ip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
+print(ip)  # should print "192.168.100.37"
+SERVER_HOST = os.popen('ip addr show eth0 | grep "\<inet\>" | awk \'{ print $2 }\' | awk -F "/" \'{ print $1 }\'').read().strip()
+print(SERVER_HOST)
 
 #CREER LE SOCKET
 SERVER_PORT = 13000
